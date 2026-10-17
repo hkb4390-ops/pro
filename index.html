@@ -1,341 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080b16">
-<title>StudyMods HRRY — Master Admin</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>studymods.hrry — Admin Panel</title>
 <style>
-:root{color-scheme:dark;--bg:#080b16;--panel:#11182a;--panel2:#151f35;--line:#283653;--text:#f3f6ff;--muted:#9aa8c4;--blue:#6d8cff;--cyan:#5ce1e6;--red:#ff647c;--green:#4de0a3;--gold:#ffc96b}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 80% -10%,#1c2a56 0%,transparent 60%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-button,input,textarea,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:#1b2944;color:var(--text);padding:10px 13px;border-radius:12px;font-weight:650}button:hover{filter:brightness(1.15)}button.primary{background:linear-gradient(135deg,#5e79ff,#7460dc);border:0}button.danger{background:#3a1b2a;border-color:#753449;color:#ffb3c0}button.good{background:#123b35;border-color:#21685a;color:#9bffdb}.hidden{display:none!important}
-.wrap{max-width:1400px;margin:auto;padding:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#607cff,#53dbe4);display:grid;place-items:center;font-weight:950;color:#07101c;box-shadow:0 0 30px #657bff40}.brand h1{font-size:20px;margin:0}.brand p{margin:2px 0;color:var(--muted);font-size:12px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}.status{color:var(--muted);font-size:12px}.layout{display:grid;grid-template-columns:225px minmax(0,1fr);gap:18px}.side,.panel,.stat{background:linear-gradient(145deg,#121a2dF2,#0e1424F2);border:1px solid var(--line);border-radius:20px;box-shadow:0 14px 40px #0002}.side{padding:12px;height:max-content;position:sticky;top:12px}.nav{display:flex;flex-direction:column;gap:7px}.nav button{text-align:left;background:transparent;border-color:transparent;color:#b5c2dc}.nav button.active{background:#26365a;border-color:#3e558b;color:white}.nav .navlabel{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#7081a4;padding:12px 10px 4px}.main{min-width:0}.pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin:3px 0 17px}.pagehead h2{font-size:25px;margin:0}.pagehead p{margin:4px 0;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:15px}.stat{padding:17px}.stat span{color:var(--muted);font-size:12px}.stat strong{display:block;font-size:27px;margin-top:5px}.panel{padding:17px;margin-bottom:15px}.panel h3{margin:0 0 12px;font-size:16px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}.field label{font-size:12px;color:#b8c5df}.field input,.field textarea,.field select{width:100%;border:1px solid #2a3b5d;border-radius:11px;padding:11px 12px;background:#090f1d;color:var(--text);outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #6d8cff20}.field textarea{min-height:90px;resize:vertical}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{max-width:100%}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{padding:11px 10px;border-bottom:1px solid #26324b;text-align:left;vertical-align:middle}th{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#91a1c0}td{font-size:13px}td small{color:var(--muted)}.thumb{width:54px;height:38px;border-radius:8px;object-fit:cover;background:#202b43}.pill{display:inline-flex;padding:4px 8px;border-radius:99px;font-size:11px;background:#26304a;color:#c8d4f1}.pill.green{background:#123b35;color:#8af4c9}.pill.red{background:#401d2a;color:#ffafbd}.empty{padding:28px;text-align:center;color:var(--muted)}.msg{padding:11px 13px;border-radius:12px;margin:10px 0;font-size:13px}.msg.error{background:#3b1b28;color:#ffb8c3}.msg.info{background:#172b3b;color:#a8e9ff}.msg.success{background:#12372f;color:#9bffce}.login{max-width:430px;margin:7vh auto;padding:24px}.login h2{margin:0 0 5px}.login p{color:var(--muted);margin:0 0 18px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:13px}.toolbar input{flex:1;min-width:170px}.muted{color:var(--muted)}.tiny{font-size:11px}.notice{border:1px solid #66502c;background:#2d2519;color:#ffdda0;padding:12px;border-radius:12px;margin-bottom:15px}.userline{display:flex;align-items:center;gap:10px}.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#273a62;color:#b9f8ff;font-weight:800}.footer{color:#71809e;font-size:11px;text-align:center;padding:18px}.mobilebar{display:none}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.side{position:static;padding:8px}.nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.nav button{text-align:center;padding:9px 5px;font-size:12px}.nav .navlabel{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}.wrap{padding:12px}.pagehead h2{font-size:22px}}
-@media(max-width:420px){.nav{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{padding:13px}.stat strong{font-size:23px}.panel{padding:13px}.brand h1{font-size:17px}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="top">
-    <div class="brand"><div class="logo">HR</div><div><h1>StudyMods HRRY</h1><p>Master Admin • Apps · Users · Updates · Banners</p></div></div>
-    <div class="row"><span class="status" id="topStatus">Not signed in</span><button id="logoutBtn" class="hidden">Sign out</button></div>
-  </header>
-
-  <section id="loginView" class="panel login">
-    <h2>Admin sign in</h2><p>Use your Firebase Authentication email and password.</p>
-    <div class="notice">Only the configured admin UID can open this dashboard. Do not put your password inside this HTML file.</div>
-    <form id="loginForm">
-      <div class="field"><label for="email">Admin email</label><input id="email" type="email" autocomplete="username" required placeholder="admin@example.com"></div>
-      <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Firebase Auth password"></div>
-      <button class="primary" style="width:100%" type="submit">Sign in securely</button>
-    </form>
-    <div id="loginMessage"></div>
-  </section>
-
-  <section id="adminView" class="hidden">
-    <div class="layout">
-      <aside class="side"><nav class="nav" id="nav">
-        <div class="navlabel">Overview</div>
-        <button class="active" data-page="dashboard">▦ Dashboard</button>
-        <div class="navlabel">Manage</div>
-        <button data-page="apps">▣ Apps / Platforms</button>
-        <button data-page="upcoming">◷ Upcoming apps</button>
-        <button data-page="users">♙ Users & analytics</button>
-        <button data-page="updates">↻ App updates</button>
-        <button data-page="banners">▧ Banners</button>
-        <button data-page="bannerStats">◉ Banner analytics</button>
-      </nav></aside>
-      <main class="main">
-        <div id="globalMessage"></div>
-        <section class="page" id="page-dashboard">
-          <div class="pagehead"><div><h2>Dashboard</h2><p>Manage your existing Firebase data from one place.</p></div><button id="refreshAll">↻ Refresh data</button></div>
-          <div class="stats">
-            <div class="stat"><span>Apps / Platforms</span><strong id="statApps">—</strong></div>
-            <div class="stat"><span>Upcoming</span><strong id="statUpcoming">—</strong></div>
-            <div class="stat"><span>Users</span><strong id="statUsers">—</strong></div>
-            <div class="stat"><span>Banners</span><strong id="statBanners">—</strong></div>
-          </div>
-          <div class="panel"><h3>Admin status</h3><p id="adminStatusText" class="muted">Checking authentication…</p><p class="tiny muted">The public website's Firebase reads remain public only where its existing UI requires them. All management writes should be restricted by Realtime Database Rules.</p></div>
-          <div class="notice">Important: your earlier code used both <b>platforms</b> and <b>apps</b> for app records, and both <b>updates</b> and <b>appUpdate</b> for updates. This panel uses <b>platforms</b> as the default app list (to match the public site code previously shared), and manages app releases under <b>appUpdate/live</b> + <b>appUpdate/versions</b>. Confirm the public site reads these same paths.</div>
-        </section>
-
-        <section class="page hidden" id="page-apps">
-          <div class="pagehead"><div><h2>Apps / Platforms</h2><p>Create, edit, publish or remove platform records.</p></div></div>
-          <div class="panel">
-            <div class="row" style="justify-content:space-between"><h3 id="appFormTitle">Add app / platform</h3><div class="row"><label class="tiny muted" for="appNode">Database path</label><select id="appNode"><option value="platforms">platforms (recommended)</option><option value="apps">apps (legacy panel)</option></select></div></div>
-            <form id="appForm">
-              <input id="appKey" type="hidden">
-              <div class="grid2">
-                <div class="field"><label>App / platform name *</label><input id="appName" required maxlength="120" placeholder="e.g. Study Mode"></div>
-                <div class="field"><label>Thumbnail / image URL</label><input id="appImage" type="url" placeholder="https://..."></div>
-                <div class="field"><label>Open / download URL</label><input id="appUrl" type="url" placeholder="https://..."></div>
-                <div class="field"><label>Category / label</label><input id="appCategory" maxlength="80" placeholder="Study, Tools, Android..."></div>
-                <div class="field"><label>Status</label><select id="appStatus"><option value="Published">Published</option><option value="Draft">Draft</option><option value="Upcoming">Upcoming</option></select></div>
-                <div class="field"><label>Sort order (optional)</label><input id="appOrder" type="number" placeholder="0"></div>
-              </div>
-              <div class="field"><label>Description</label><textarea id="appDescription" maxlength="1200" placeholder="Short description"></textarea></div>
-              <div class="row"><button class="primary" type="submit">Save app</button><button type="button" id="cancelAppEdit">Clear form</button></div>
-            </form>
-          </div>
-          <div class="panel">
-            <h3>Bulk import / export JSON</h3>
-            <p class="tiny muted">Paste an array in <code>[{"id":"...","title":"...","logo":"https://...","link":"https://..."}]</code> format. Existing matching IDs will be updated; new IDs will be added. Other records will not be deleted.</p>
-            <div class="field"><label for="appJson">JSON data</label><textarea id="appJson" style="min-height:190px;font-family:ui-monospace,monospace" spellcheck="false" placeholder='[
-  {
-    "id": "app-id-1",
-    "title": "Study App",
-    "logo": "https://example.com/logo.png",
-    "link": "https://example.com"
-  }
-]'></textarea></div>
-            <div class="row"><button class="primary" id="importAppsJson" type="button">Import / Update JSON</button><button id="exportAppsJson" type="button">Export current list as JSON</button><button id="clearAppsJson" type="button">Clear box</button></div>
-            <div id="appJsonMessage"></div>
-          </div>
-          <div class="panel"><div class="toolbar"><input id="appSearch" placeholder="Search apps…"><button id="reloadApps">Reload</button></div><div id="appsTable" class="tablewrap"><div class="empty">Loading…</div></div></div>
-        </section>
-
-        <section class="page hidden" id="page-upcoming">
-          <div class="pagehead"><div><h2>Upcoming apps</h2><p>Manage the upcoming list separately.</p></div></div>
-          <div class="panel"><h3 id="upFormTitle">Add upcoming app</h3><form id="upForm"><input id="upKey" type="hidden"><div class="grid2">
-            <div class="field"><label>Name *</label><input id="upName" required maxlength="120"></div>
-            <div class="field"><label>Image URL</label><input id="upImage" type="url" placeholder="https://..."></div>
-            <div class="field"><label>Expected date / label</label><input id="upDate" maxlength="80" placeholder="Coming soon"></div>
-            <div class="field"><label>Sort order</label><input id="upOrder" type="number" placeholder="0"></div>
-          </div><div class="field"><label>Description</label><textarea id="upDescription" maxlength="1200"></textarea></div><div class="row"><button class="primary" type="submit">Save upcoming app</button><button type="button" id="cancelUpEdit">Clear form</button></div></form></div>
-          <div class="panel"><div class="toolbar"><input id="upSearch" placeholder="Search upcoming…"><button id="reloadUpcoming">Reload</button></div><div id="upcomingTable" class="tablewrap"><div class="empty">Loading…</div></div></div>
-        </section>
-
-        <section class="page hidden" id="page-users">
-          <div class="pagehead"><div><h2>Users & analytics</h2><p>Read user records. User records may contain client-submitted values and are not proof of identity.</p></div><button id="reloadUsers">Reload users</button></div>
-          <div class="stats"><div class="stat"><span>Total users</span><strong id="userTotal">—</strong></div><div class="stat"><span>Active in last 24h*</span><strong id="userActive">—</strong></div><div class="stat"><span>New in last 7 days*</span><strong id="userNew">—</strong></div><div class="stat"><span>Records with name</span><strong id="userNamed">—</strong></div></div>
-          <div class="panel"><div class="toolbar"><input id="userSearch" placeholder="Search by name, email, UID…"><button id="exportUsers">Export CSV</button></div><div id="usersTable" class="tablewrap"><div class="empty">Loading…</div></div><p class="tiny muted">*Calculated from timestamp fields available in your existing records. If your website stores different field names, these estimates may show 0.</p></div>
-        </section>
-
-        <section class="page hidden" id="page-updates">
-          <div class="pagehead"><div><h2>App updates</h2><p>Manage the live release and version history under appUpdate.</p></div></div>
-          <div class="panel"><h3>Live update / release</h3><form id="liveUpdateForm"><div class="grid2">
-            <div class="field"><label>Version *</label><input id="liveVersion" required placeholder="e.g. 2.1.0"></div>
-            <div class="field"><label>Download URL *</label><input id="liveUrl" type="url" required placeholder="https://..."></div>
-            <div class="field"><label>Release title</label><input id="liveTitle" maxlength="150" placeholder="New update available"></div>
-            <div class="field"><label>Minimum supported version</label><input id="liveMinVersion" placeholder="e.g. 1.0.0"></div>
-          </div><div class="field"><label>What's new / release notes</label><textarea id="liveNotes" maxlength="5000"></textarea></div><div class="row"><button class="primary" type="submit">Publish live update</button><button type="button" id="loadLiveUpdate">Reload current</button></div></form><div id="liveUpdateInfo" class="muted tiny" style="margin-top:10px"></div></div>
-          <div class="panel"><h3>Add version to history</h3><form id="versionForm"><div class="grid2"><div class="field"><label>Version *</label><input id="versionNumber" required placeholder="e.g. 2.1.0"></div><div class="field"><label>Download URL</label><input id="versionUrl" type="url" placeholder="https://..."></div></div><div class="field"><label>Release notes</label><textarea id="versionNotes" maxlength="5000"></textarea></div><div class="row"><button class="primary" type="submit">Save version</button></div></form></div>
-          <div class="panel"><div class="toolbar"><input id="versionSearch" placeholder="Search versions…"><button id="reloadVersions">Reload versions</button></div><div id="versionsTable" class="tablewrap"><div class="empty">Loading…</div></div></div>
-          <div class="notice">This writes to <b>appUpdate/live</b> and <b>appUpdate/versions</b>. If your public website reads the older <b>updates</b> node, update its code to use this schema or tell me the exact structure you want preserved.</div>
-        </section>
-
-        <section class="page hidden" id="page-banners">
-          <div class="pagehead"><div><h2>Banners</h2><p>Create and manage website banner cards.</p></div></div>
-          <div class="panel"><h3 id="bannerFormTitle">Add banner</h3><form id="bannerForm"><input id="bannerKey" type="hidden"><div class="grid2">
-            <div class="field"><label>Banner title *</label><input id="bannerTitle" required maxlength="150"></div>
-            <div class="field"><label>Image URL *</label><input id="bannerImage" type="url" required placeholder="https://..."></div>
-            <div class="field"><label>Click-through URL</label><input id="bannerLink" type="url" placeholder="https://..."></div>
-            <div class="field"><label>Status</label><select id="bannerEnabled"><option value="true">Enabled</option><option value="false">Disabled</option></select></div>
-            <div class="field"><label>Sort order</label><input id="bannerOrder" type="number" placeholder="0"></div>
-            <div class="field"><label>Alt text</label><input id="bannerAlt" maxlength="180"></div>
-          </div><div class="row"><button class="primary" type="submit">Save banner</button><button type="button" id="cancelBannerEdit">Clear form</button></div></form></div>
-          <div class="panel"><div class="toolbar"><input id="bannerSearch" placeholder="Search banners…"><button id="reloadBanners">Reload</button></div><div id="bannersTable" class="tablewrap"><div class="empty">Loading…</div></div></div>
-        </section>
-
-        <section class="page hidden" id="page-bannerStats">
-          <div class="pagehead"><div><h2>Banner analytics</h2><p>View existing bannerAnalytics records.</p></div><button id="reloadBannerStats">Reload analytics</button></div>
-          <div class="panel"><div id="bannerStatsTable" class="tablewrap"><div class="empty">Loading…</div></div></div>
-          <div class="notice">Secure rules below restrict bannerAnalytics writes to admin only. If your public website currently increments clicks/views directly from visitors, those counters will stop updating under secure rules. For trustworthy visitor analytics, record events through a trusted backend or Cloud Function instead of allowing public database writes.</div>
-        </section>
-      </main>
-    </div>
-  </section>
-  <div class="footer">StudyMods HRRY • Master Admin • Keep Firebase Realtime Database Rules secure.</div>
-</div>
-
+:root{--bg:#0a0a0c;--card:rgba(255,255,255,.045);--border:rgba(255,255,255,.1);--blue:#0a84ff;--text:#fff;--muted:#98989f;--green:#32d74b;--red:#ff453a;--orange:#ff9f0a}*{box-sizing:border-box;margin:0;padding:0}body{background:radial-gradient(ellipse at top,#101c31 0,#0a0a0c 48%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:18px}.container{max-width:850px;margin:auto}h1{text-align:center;font-size:clamp(24px,5vw,32px);font-weight:850;margin:8px 0 8px;background:linear-gradient(135deg,#0a84ff,#5ac8fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:22px}.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:18px;backdrop-filter:blur(20px);box-shadow:0 12px 30px #0005}.card h2{font-size:19px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:11px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-group{margin-bottom:14px}.full{grid-column:1/-1}label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px}input,select,textarea{width:100%;padding:13px;background:#050507;border:1px solid var(--border);border-radius:11px;color:white;font-size:15px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue)}button{border:0;cursor:pointer;font-weight:750;border-radius:11px;padding:12px 15px;font-size:14px}.btn{background:var(--blue);color:#fff;width:100%;padding:14px;font-size:15px}.btn-update{background:var(--green);color:#061006}.secondary{background:#343438;color:#fff;width:100%;margin-top:8px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.toolbar button{background:#29292e;color:#fff}.toolbar .export{background:#147a36}.toolbar .import{background:#6941c6}.toolbar input{flex:1;min-width:140px}.item{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:13px;margin:10px 0;background:#ffffff06;border:1px solid var(--border);border-radius:13px}.info{min-width:0;flex:1}.title{font-size:15px;font-weight:750;overflow-wrap:anywhere}.meta{font-size:12px;color:var(--muted);margin-top:5px;overflow-wrap:anywhere}.badge{display:inline-block;font-size:10px;padding:3px 7px;border-radius:6px;background:#0a84ff25;color:#64b5ff;margin-left:5px}.badge.up{background:#ff9f0a22;color:#ffb340}.badge.legacy{background:#a1a1aa22;color:#d4d4d8}.actions{display:flex;gap:6px;flex-shrink:0}.sm{padding:8px 10px;font-size:12px}.edit{background:var(--green);color:#061006}.del{background:var(--red);color:white}.status{padding:10px 12px;border-radius:10px;background:#ffffff08;color:#b7e1ff;font-size:13px;margin-bottom:14px;overflow-wrap:anywhere}.empty{text-align:center;color:var(--muted);padding:22px;font-size:14px}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px}.hide{display:none!important}@media(max-width:560px){body{padding:12px}.card{padding:15px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.item{align-items:flex-start;flex-wrap:wrap}.actions{width:100%;justify-content:flex-end}.actions button{flex:1}}
+</style></head><body><main class="container">
+<h1>studymods.hrry</h1><p class="sub">Admin Control Panel · Firebase Realtime Database</p>
+<div id="status" class="status">Connecting to Firebase…</div>
+<section class="card"><h2 id="form-heading">Add New App</h2><form id="app-form"><input type="hidden" id="app-id"><input type="hidden" id="old-node">
+<div class="grid"><div class="form-group full"><label>App Category</label><select id="app-category"><option value="platforms">Published App (User App Home)</option><option value="upcoming">Upcoming App (Upcoming Tab)</option></select></div>
+<div class="form-group"><label>Position / Order (1 = first)</label><input type="number" id="app-order" value="1" min="1"></div>
+<div class="form-group"><label>App Name</label><input type="text" id="app-name" required placeholder="e.g. Math Master Pro"></div>
+<div class="form-group full"><label>App Logo URL</label><input type="url" id="app-logo" required placeholder="https://example.com/logo.png"></div>
+<div class="form-group full"><label>App Link (APK / Website)</label><input type="url" id="app-link" placeholder="https://example.com"></div>
+<div class="form-group full"><label>Short Description</label><textarea id="app-desc" rows="3" placeholder="Short description…"></textarea></div></div>
+<button type="submit" class="btn" id="save-btn">Save New App</button><button type="button" class="secondary hide" id="cancel-btn" onclick="resetForm()">Cancel Edit Mode</button></form>
+<p class="hint">Published apps are saved to <b>platforms</b>, the primary path used by the fixed User App. Existing records in <b>apps</b> are also displayed for compatibility.</p></section>
+<section class="card"><h2>Manage Existing Apps</h2><div class="toolbar"><input id="search" placeholder="Search apps…"><button id="reload-btn">Reload</button><button class="export" id="export-btn">Export JSON</button><button class="import" id="import-btn">Import JSON</button><input class="hide" type="file" id="import-file" accept=".json,application/json"></div><div id="admin-apps-list"><p class="empty">Loading apps from database…</p></div></section>
+</main>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getDatabase, ref, get, set, update, remove, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-
-/* Firebase client configuration is public website configuration, not an admin password.
-   Set the same project values used by your existing public site. */
-const firebaseConfig = {
-  apiKey: "AIzaSyAGJsBtv72SIH0rQjk42SMFgMb2DpzwlBI",
-  authDomain: "ewhe-1827a.firebaseapp.com",
-  databaseURL: "https://ewhe-1827a-default-rtdb.firebaseio.com/",
-  projectId: "ewhe-1827a",
-  storageBucket: "ewhe-1827a.firebasestorage.app",
-  messagingSenderId: "528686843390",
-  appId: "1:528686843390:web:08daf51901bd1c58ffacaf"
-};
-const ADMIN_UID = "AZ1JZ0zZdYYcwc47PYvpLiGIGVr1";
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-let currentUser = null;
-let cache = {platforms:{},apps:{},upcoming:{},users:{},banners:{},bannerAnalytics:{},versions:{},live:null};
-const $ = id => document.getElementById(id);
-const safe = v => String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const val = id => $(id).value.trim();
-const timeOf = o => Number(o?.lastSeen || o?.lastActive || o?.updatedAt || o?.timestamp || o?.createdAt || o?.joinedAt || o?.last_seen || 0);
-function message(target, text, type="info"){ $(target).innerHTML = `<div class="msg ${type}">${safe(text)}</div>`; setTimeout(()=>{ if($(target)) $(target).innerHTML=""; }, 6000); }
-function obj(s){ return s && typeof s==="object" ? s : {}; }
-async function read(path){ const snap=await get(ref(db,path)); return snap.exists()?snap.val():null; }
-async function write(path,data){ await set(ref(db,path),data); }
-async function del(path){ await remove(ref(db,path)); }
-function count(o){ return Object.keys(obj(o)).length; }
-function fmtDate(v){ const n=Number(v); if(!n) return "—"; try{return new Date(n<1e12?n*1000:n).toLocaleString();}catch{return "—";} }
-function sortRows(o){return Object.entries(obj(o)).sort((a,b)=>(Number(a[1]?.order)||0)-(Number(b[1]?.order)||0));}
-function setTop(text){$("topStatus").textContent=text;}
-function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));$("page-"+name)?.classList.remove("hidden");document.querySelectorAll("#nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===name));loadPage(name).catch(e=>message("globalMessage",friendly(e),"error"));}
-function friendly(e){ const c=e?.code||""; if(c.includes("permission-denied"))return "Firebase permission denied. Check Database Rules and confirm this signed-in UID is the admin UID."; if(c.includes("network"))return "Network error. Check your connection and Firebase configuration."; if(c.includes("invalid-credential")||c.includes("wrong-password")||c.includes("user-not-found"))return "Email or password is incorrect."; return e?.message||"Something went wrong."; }
-function confirmDelete(label){return window.confirm(`Delete "${label}"? This cannot be undone.`);}
-onAuthStateChanged(auth, async user=>{
-  currentUser=user;
-  if(!user){$("loginView").classList.remove("hidden");$("adminView").classList.add("hidden");$("logoutBtn").classList.add("hidden");setTop("Not signed in");return;}
-  if(user.uid!==ADMIN_UID){
-    $("loginView").classList.remove("hidden");$("adminView").classList.add("hidden");$("logoutBtn").classList.remove("hidden");
-    $("loginMessage").innerHTML='<div class="msg error"><b>Email/password accepted, but admin UID mismatch.</b><br>Signed-in UID: <code style="user-select:all;overflow-wrap:anywhere">'+safe(user.uid)+'</code><br>Configured UID: <code style="user-select:all;overflow-wrap:anywhere">'+safe(ADMIN_UID)+'</code><br>Copy the Signed-in UID from Firebase Authentication and use the exact same UID in ADMIN_UID and your Database Rules. Do not share your password.</div>';
-    setTop("Access denied • UID mismatch");return;
-  }
-  $("loginView").classList.add("hidden");$("adminView").classList.remove("hidden");$("logoutBtn").classList.remove("hidden");setTop("Admin verified • "+user.email);$("adminStatusText").textContent="Signed in as "+user.email+" • UID verified.";
-  try{await refreshAll();}catch(e){message("globalMessage",friendly(e),"error");}
-});
-$("loginForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const button=$("loginForm").querySelector('button[type="submit"]');
-  button.disabled=true;button.textContent="Checking login…";$("loginMessage").innerHTML='<div class="msg info">Checking Firebase login and admin permissions…</div>';
-  try{
-    const credential=await signInWithEmailAndPassword(auth,val("email"),val("password"));
-    if(credential.user.uid!==ADMIN_UID){
-      $("loginMessage").innerHTML='<div class="msg error"><b>Login successful, but this account is not the configured admin.</b><br>Signed-in UID: <code style="user-select:all;overflow-wrap:anywhere">'+safe(credential.user.uid)+'</code><br>Expected UID: <code style="user-select:all;overflow-wrap:anywhere">'+safe(ADMIN_UID)+'</code><br>Update ADMIN_UID in this HTML and use that same UID in Firebase Database Rules, if this is the intended admin account.</div>';
-      await signOut(auth);
-    } else {
-      // Open the dashboard directly after successful sign-in instead of relying only
-      // on the asynchronous auth-state listener to change the screen.
-      currentUser = credential.user;
-      $("loginView").classList.add("hidden");
-      $("adminView").classList.remove("hidden");
-      $("logoutBtn").classList.remove("hidden");
-      setTop("Admin verified • " + (credential.user.email || "Signed in"));
-      $("adminStatusText").textContent = "Signed in as " + (credential.user.email || "admin") + " • UID verified. Loading Firebase data…";
-      $("loginMessage").innerHTML = "";
-      // Data loading must not block opening the dashboard.
-      refreshAll().then(()=>{
-        $("adminStatusText").textContent = "Signed in as " + (credential.user.email || "admin") + " • UID verified.";
-      }).catch(err=>{
-        message("globalMessage", "Dashboard opened, but data could not load: " + friendly(err), "error");
-        $("adminStatusText").textContent = "Signed in • Firebase data read failed. Check Realtime Database Rules.";
-      });
-    }
-  }catch(err){message("loginMessage",friendly(err),"error");}
-  finally{button.disabled=false;button.textContent="Sign in securely";}
-});
-$("logoutBtn").addEventListener("click",async()=>{await signOut(auth);});
-$("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-page]");if(b)showPage(b.dataset.page);});
-async function refreshAll(){
-  const paths=["platforms","apps","upcoming","users","banners","bannerAnalytics","appUpdate/versions","appUpdate/live"];
-  const values=await Promise.all(paths.map(read));
-  [cache.platforms,cache.apps,cache.upcoming,cache.users,cache.banners,cache.bannerAnalytics,cache.versions,cache.live]=values;
-  $("statApps").textContent=count(cache.platforms);$("statUpcoming").textContent=count(cache.upcoming);$("statUsers").textContent=count(cache.users);$("statBanners").textContent=count(cache.banners);
-  renderApps();renderUpcoming();renderUsers();renderBanners();renderBannerStats();renderVersions();renderLiveInfo();
-}
-$("refreshAll").addEventListener("click",()=>refreshAll().then(()=>message("globalMessage","All sections refreshed.","success")).catch(e=>message("globalMessage",friendly(e),"error")));
-async function loadPage(name){
-  if(name==="dashboard"){ $("statApps").textContent=count(cache.platforms); return; }
-  if(name==="apps"){const node=val("appNode");cache[node]=await read(node)||{};renderApps();}
-  if(name==="upcoming"){cache.upcoming=await read("upcoming")||{};renderUpcoming();}
-  if(name==="users"){cache.users=await read("users")||{};renderUsers();}
-  if(name==="updates"){cache.versions=await read("appUpdate/versions")||{};cache.live=await read("appUpdate/live");renderVersions();renderLiveInfo();}
-  if(name==="banners"){cache.banners=await read("banners")||{};renderBanners();}
-  if(name==="bannerStats"){cache.bannerAnalytics=await read("bannerAnalytics")||{};renderBannerStats();}
-}
-/* Apps / platforms */
-function appDataFromForm(){return {name:val("appName"),title:val("appName"),image:val("appImage"),logo:val("appImage"),thumbnail:val("appImage"),url:val("appUrl"),link:val("appUrl"),category:val("appCategory"),status:val("appStatus"),description:val("appDescription"),order:Number(val("appOrder")||0),updatedAt:Date.now()};}
-function renderApps(){const node=val("appNode")||"platforms", q=val("appSearch").toLowerCase();const rows=sortRows(cache[node]).filter(([k,v])=>[k,v?.name,v?.title,v?.category,v?.status].some(x=>String(x||"").toLowerCase().includes(q)));if(!rows.length){$("appsTable").innerHTML='<div class="empty">No apps found in '+safe(node)+'.</div>';return;}
-$("appsTable").innerHTML=`<table><thead><tr><th>Item</th><th>Name / category</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${v.image||v.logo||v.thumbnail?`<img class="thumb" src="${safe(v.image||v.logo||v.thumbnail)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:"—"}</td><td><b>${safe(v.name||v.title||"Untitled")}</b><br><small>${safe(v.category||"No category")} · key: ${safe(k)}</small></td><td><span class="pill ${String(v.status).toLowerCase()==="published"?"green":""}">${safe(v.status||"—")}</span></td><td><div class="row"><button data-edit-app="${safe(k)}">Edit</button><button class="danger" data-delete-app="${safe(k)}">Delete</button></div></td></tr>`).join("")}</tbody></table>`;}
-$("appNode").addEventListener("change",()=>loadPage("apps").catch(e=>message("globalMessage",friendly(e),"error")));
-$("appSearch").addEventListener("input",renderApps);$("reloadApps").addEventListener("click",()=>loadPage("apps").catch(e=>message("globalMessage",friendly(e),"error")));
-$("appForm").addEventListener("submit",async e=>{e.preventDefault();try{const node=val("appNode"),key=val("appKey")||push(ref(db,node)).key;const data=appDataFromForm();if(!data.name)throw new Error("App name is required.");if(!val("appKey"))data.createdAt=Date.now();await write(`${node}/${key}`,data);cache[node]=await read(node)||{};renderApps();clearAppForm();message("globalMessage","App saved successfully.","success");}catch(err){message("globalMessage",friendly(err),"error");}});
-$("appsTable").addEventListener("click",async e=>{const edit=e.target.closest("[data-edit-app]"), delb=e.target.closest("[data-delete-app]"),node=val("appNode");if(edit){const k=edit.dataset.editApp,v=cache[node]?.[k]||{};$("appKey").value=k;$("appName").value=v.name||v.title||"";$("appImage").value=v.image||v.logo||v.thumbnail||"";$("appUrl").value=v.url||v.link||"";$("appCategory").value=v.category||"";$("appStatus").value=v.status||"Published";$("appOrder").value=v.order??0;$("appDescription").value=v.description||"";$("appFormTitle").textContent="Edit app / platform";window.scrollTo({top:0,behavior:"smooth"});}if(delb){const k=delb.dataset.deleteApp,v=cache[node]?.[k];if(confirmDelete(v?.name||v?.title||k)){try{await del(`${node}/${k}`);cache[node]=await read(node)||{};renderApps();message("globalMessage","App deleted.","success");}catch(err){message("globalMessage",friendly(err),"error");}}}});
-function clearAppForm(){$("appForm").reset();$("appKey").value="";$("appFormTitle").textContent="Add app / platform";}
-$("cancelAppEdit").addEventListener("click",clearAppForm);
-function canonicalAppArray(node=val("appNode")){
-  return Object.entries(obj(cache[node])).map(([id,v0])=>{const v=obj(v0);return {id,title:String(v.title||v.name||""),logo:String(v.logo||v.image||v.thumbnail||""),link:String(v.link||v.url||"")};});
-}
-function downloadText(filename,text,mime="application/json;charset=utf-8"){
-  const blob=new Blob([text],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-$("importAppsJson").addEventListener("click",async()=>{
-  const button=$("importAppsJson");
-  try{
-    const raw=val("appJson");if(!raw)throw new Error("JSON box is empty. Paste your app array first.");
-    const parsed=JSON.parse(raw);if(!Array.isArray(parsed))throw new Error("JSON must be an array: [ { id, title, logo, link } ].");
-    if(!parsed.length)throw new Error("JSON array is empty.");
-    const normalized=parsed.map((item,i)=>{
-      if(!item||typeof item!=="object"||Array.isArray(item))throw new Error(`Item ${i+1} is not an object.`);
-      const title=String(item.title??item.name??"").trim(),logo=String(item.logo??item.image??item.thumbnail??"").trim(),link=String(item.link??item.url??"").trim();
-      if(!title)throw new Error(`Item ${i+1} has no title/name.`);
-      if(logo&&!/^https?:\/\//i.test(logo))throw new Error(`Item ${i+1} logo must start with http:// or https://.`);
-      if(link&&!/^https?:\/\//i.test(link))throw new Error(`Item ${i+1} link must start with http:// or https://.`);
-      const id=String(item.id??"").trim()||push(ref(db,val("appNode"))).key;
-      if(/[.#$\[\]\/]/.test(id))throw new Error(`Item ${i+1} has an invalid Firebase id: ${id}`);
-      return {id,title,logo,link};
-    });
-    const ids=new Set();for(const item of normalized){if(ids.has(item.id))throw new Error(`Duplicate id in JSON: ${item.id}`);ids.add(item.id);}
-    if(!confirm(`Import ${normalized.length} app(s) into "${val("appNode")}"? Matching IDs will be updated. Other records will remain untouched.`))return;
-    button.disabled=true;button.textContent="Importing…";
-    const node=val("appNode"),now=Date.now();
-    // Preserve extra fields on an existing record while updating the four JSON fields.
-    for(const item of normalized){
-      const old=obj(cache[node]?.[item.id]);
-      const record={...old,id:item.id,title:item.title,name:item.title,logo:item.logo,image:item.logo,thumbnail:item.logo,link:item.link,url:item.link,updatedAt:now};
-      if(!cache[node]?.[item.id])record.createdAt=now;
-      await write(`${node}/${item.id}`,record);
-    }
-    cache[node]=await read(node)||{};renderApps();
-    message("appJsonMessage",`Imported/updated ${normalized.length} app(s) in ${node}. Existing IDs were matched automatically.`,"success");
-    message("globalMessage",`JSON import complete: ${normalized.length} app(s).`,"success");
-  }catch(err){message("appJsonMessage",friendly(err),"error");}
-  finally{button.disabled=false;button.textContent="Import / Update JSON";}
-});
-$("exportAppsJson").addEventListener("click",async()=>{
-  try{const node=val("appNode");cache[node]=await read(node)||{};renderApps();const data=canonicalAppArray(node);const json=JSON.stringify(data,null,2);$("appJson").value=json;downloadText(`studymods-hrry-${node}.json`,json);message("appJsonMessage",`Exported ${data.length} app(s) from ${node} in id/title/logo/link format.`,"success");}
-  catch(err){message("appJsonMessage",friendly(err),"error");}
-});
-$("clearAppsJson").addEventListener("click",()=>{$("appJson").value="";$("appJsonMessage").innerHTML="";});
-/* Upcoming */
-function renderUpcoming(){const q=val("upSearch").toLowerCase(),rows=sortRows(cache.upcoming).filter(([k,v])=>[k,v?.name,v?.title,v?.description].some(x=>String(x||"").toLowerCase().includes(q)));if(!rows.length){$("upcomingTable").innerHTML='<div class="empty">No upcoming apps found.</div>';return;}
-$("upcomingTable").innerHTML=`<table><thead><tr><th>Image</th><th>Name / details</th><th>Actions</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${v.image||v.logo||v.thumbnail?`<img class="thumb" src="${safe(v.image||v.logo||v.thumbnail)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:"—"}</td><td><b>${safe(v.name||v.title||"Untitled")}</b><br><small>${safe(v.date||v.releaseDate||"Coming soon")} · key: ${safe(k)}</small></td><td><div class="row"><button data-edit-up="${safe(k)}">Edit</button><button class="danger" data-delete-up="${safe(k)}">Delete</button></div></td></tr>`).join("")}</tbody></table>`;}
-$("upSearch").addEventListener("input",renderUpcoming);$("reloadUpcoming").addEventListener("click",()=>loadPage("upcoming").catch(e=>message("globalMessage",friendly(e),"error")));
-$("upForm").addEventListener("submit",async e=>{e.preventDefault();try{const k=val("upKey")||push(ref(db,"upcoming")).key;const d={name:val("upName"),title:val("upName"),image:val("upImage"),thumbnail:val("upImage"),date:val("upDate"),releaseDate:val("upDate"),order:Number(val("upOrder")||0),description:val("upDescription"),updatedAt:Date.now()};if(!val("upKey"))d.createdAt=Date.now();await write("upcoming/"+k,d);cache.upcoming=await read("upcoming")||{};renderUpcoming();clearUpForm();message("globalMessage","Upcoming app saved.","success");}catch(err){message("globalMessage",friendly(err),"error");}});
-$("upcomingTable").addEventListener("click",async e=>{const a=e.target.closest("[data-edit-up]"),d=e.target.closest("[data-delete-up]");if(a){const k=a.dataset.editUp,v=cache.upcoming[k]||{};$("upKey").value=k;$("upName").value=v.name||v.title||"";$("upImage").value=v.image||v.thumbnail||"";$("upDate").value=v.date||v.releaseDate||"";$("upOrder").value=v.order??0;$("upDescription").value=v.description||"";$("upFormTitle").textContent="Edit upcoming app";window.scrollTo({top:0,behavior:"smooth"});}if(d){const k=d.dataset.deleteUp;if(confirmDelete(cache.upcoming[k]?.name||k)){try{await del("upcoming/"+k);cache.upcoming=await read("upcoming")||{};renderUpcoming();message("globalMessage","Upcoming item deleted.","success");}catch(err){message("globalMessage",friendly(err),"error");}}}});
-function clearUpForm(){$("upForm").reset();$("upKey").value="";$("upFormTitle").textContent="Add upcoming app";}
-$("cancelUpEdit").addEventListener("click",clearUpForm);
-/* Users */
-function renderUsers(){const users=obj(cache.users),entries=Object.entries(users),now=Date.now(),q=val("userSearch").toLowerCase();let active=0,new7=0,named=0;for(const [,u0] of entries){const u=obj(u0),t=timeOf(u);if(t&&now-(t<1e12?t*1000:t)<86400000)active++;const c=Number(u.createdAt||u.joinedAt||u.created_at||0);if(c&&now-(c<1e12?c*1000:c)<7*86400000)new7++;if(u.name||u.displayName)named++;}$("userTotal").textContent=entries.length;$("userActive").textContent=active;$("userNew").textContent=new7;$("userNamed").textContent=named;
-const rows=entries.filter(([k,u0])=>{const u=obj(u0);return [k,u.name,u.displayName,u.email,u.username].some(x=>String(x||"").toLowerCase().includes(q));}).sort((a,b)=>timeOf(obj(b[1]))-timeOf(obj(a[1])));if(!rows.length){$("usersTable").innerHTML='<div class="empty">No user records found.</div>';return;}
-$("usersTable").innerHTML=`<table><thead><tr><th>User</th><th>UID</th><th>Last activity</th><th>Other fields</th></tr></thead><tbody>${rows.map(([uid,u0])=>{const u=obj(u0),name=u.name||u.displayName||u.username||"Unnamed user";return `<tr><td><div class="userline"><div class="avatar">${safe(String(name).slice(0,1).toUpperCase())}</div><div><b>${safe(name)}</b><br><small>${safe(u.email||"No email")}</small></div></div></td><td><small>${safe(uid)}</small></td><td>${safe(fmtDate(timeOf(u)))}</td><td><small>${safe(Object.keys(u).slice(0,8).join(", "))}</small></td></tr>`;}).join("")}</tbody></table>`;}
-$("userSearch").addEventListener("input",renderUsers);$("reloadUsers").addEventListener("click",()=>loadPage("users").catch(e=>message("globalMessage",friendly(e),"error")));
-$("exportUsers").addEventListener("click",()=>{const rows=[["uid","name","email","lastActivity","fields"],...Object.entries(obj(cache.users)).map(([uid,u0])=>{const u=obj(u0);return [uid,u.name||u.displayName||u.username||"",u.email||"",fmtDate(timeOf(u)),Object.keys(u).join("|")];})];const csv=rows.map(r=>r.map(x=>`"${String(x??"").replace(/"/g,'""')}"`).join(",")).join("\r\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));a.download="studymods-hrry-users.csv";a.click();URL.revokeObjectURL(a.href);});
-/* Updates */
-async function loadLive(){cache.live=await read("appUpdate/live");const v=obj(cache.live);$("liveVersion").value=v.version||"";$("liveUrl").value=v.url||v.downloadUrl||"";$("liveTitle").value=v.title||"";$("liveMinVersion").value=v.minVersion||"";$("liveNotes").value=v.notes||v.releaseNotes||"";renderLiveInfo();}
-function renderLiveInfo(){const v=obj(cache.live);$("liveUpdateInfo").textContent=cache.live?`Current live version: ${v.version||"—"} • Updated: ${fmtDate(v.updatedAt)}`:"No live update has been published yet.";}
-$("liveUpdateForm").addEventListener("submit",async e=>{e.preventDefault();try{const d={version:val("liveVersion"),url:val("liveUrl"),downloadUrl:val("liveUrl"),title:val("liveTitle"),minVersion:val("liveMinVersion"),notes:val("liveNotes"),releaseNotes:val("liveNotes"),updatedAt:Date.now(),updatedBy:currentUser.uid};await write("appUpdate/live",d);cache.live=d;renderLiveInfo();message("globalMessage","Live update published.","success");}catch(err){message("globalMessage",friendly(err),"error");}});
-$("loadLiveUpdate").addEventListener("click",()=>loadLive().catch(e=>message("globalMessage",friendly(e),"error")));
-$("versionForm").addEventListener("submit",async e=>{e.preventDefault();try{const k=push(ref(db,"appUpdate/versions")).key,d={version:val("versionNumber"),url:val("versionUrl"),downloadUrl:val("versionUrl"),notes:val("versionNotes"),releaseNotes:val("versionNotes"),createdAt:Date.now(),createdBy:currentUser.uid};await write("appUpdate/versions/"+k,d);cache.versions=await read("appUpdate/versions")||{};renderVersions();$("versionForm").reset();message("globalMessage","Version history saved.","success");}catch(err){message("globalMessage",friendly(err),"error");}});
-function renderVersions(){const q=val("versionSearch").toLowerCase(),rows=Object.entries(obj(cache.versions)).filter(([k,v])=>[k,v?.version,v?.notes].some(x=>String(x||"").toLowerCase().includes(q))).sort((a,b)=>(Number(b[1]?.createdAt)||0)-(Number(a[1]?.createdAt)||0));if(!rows.length){$("versionsTable").innerHTML='<div class="empty">No version history found.</div>';return;}
-$("versionsTable").innerHTML=`<table><thead><tr><th>Version</th><th>Notes</th><th>Created</th><th>Actions</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td><b>${safe(v.version||"—")}</b><br><small>${safe(v.url||v.downloadUrl||"No URL")}</small></td><td>${safe(v.notes||v.releaseNotes||"—")}</td><td>${safe(fmtDate(v.createdAt))}</td><td><button class="danger" data-delete-version="${safe(k)}">Delete</button></td></tr>`).join("")}</tbody></table>`;}
-$("versionSearch").addEventListener("input",renderVersions);$("reloadVersions").addEventListener("click",()=>loadPage("updates").catch(e=>message("globalMessage",friendly(e),"error")));
-$("versionsTable").addEventListener("click",async e=>{const b=e.target.closest("[data-delete-version]");if(b&&confirmDelete("version "+(cache.versions[b.dataset.deleteVersion]?.version||b.dataset.deleteVersion))){try{await del("appUpdate/versions/"+b.dataset.deleteVersion);cache.versions=await read("appUpdate/versions")||{};renderVersions();message("globalMessage","Version deleted.","success");}catch(err){message("globalMessage",friendly(err),"error");}}});
-/* Banners */
-function renderBanners(){const q=val("bannerSearch").toLowerCase(),rows=sortRows(cache.banners).filter(([k,v])=>[k,v?.title,v?.name].some(x=>String(x||"").toLowerCase().includes(q)));if(!rows.length){$("bannersTable").innerHTML='<div class="empty">No banners found.</div>';return;}
-$("bannersTable").innerHTML=`<table><thead><tr><th>Preview</th><th>Banner</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td><img class="thumb" src="${safe(v.image||v.imageUrl||"")}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"></td><td><b>${safe(v.title||v.name||"Untitled")}</b><br><small>${safe(v.link||v.url||"No click URL")} · ${safe(k)}</small></td><td><span class="pill ${v.enabled===false||v.enabled==="false"?"red":"green"}">${v.enabled===false||v.enabled==="false"?"Disabled":"Enabled"}</span></td><td><div class="row"><button data-edit-banner="${safe(k)}">Edit</button><button class="danger" data-delete-banner="${safe(k)}">Delete</button></div></td></tr>`).join("")}</tbody></table>`;}
-$("bannerSearch").addEventListener("input",renderBanners);$("reloadBanners").addEventListener("click",()=>loadPage("banners").catch(e=>message("globalMessage",friendly(e),"error")));
-$("bannerForm").addEventListener("submit",async e=>{e.preventDefault();try{const k=val("bannerKey")||push(ref(db,"banners")).key,old=cache.banners[k]||{};const d={...old,title:val("bannerTitle"),image:val("bannerImage"),imageUrl:val("bannerImage"),link:val("bannerLink"),url:val("bannerLink"),enabled:val("bannerEnabled")==="true",order:Number(val("bannerOrder")||0),alt:val("bannerAlt"),updatedAt:Date.now()};if(!val("bannerKey"))d.createdAt=Date.now();await write("banners/"+k,d);cache.banners=await read("banners")||{};renderBanners();clearBannerForm();message("globalMessage","Banner saved.","success");}catch(err){message("globalMessage",friendly(err),"error");}});
-$("bannersTable").addEventListener("click",async e=>{const a=e.target.closest("[data-edit-banner]"),d=e.target.closest("[data-delete-banner]");if(a){const k=a.dataset.editBanner,v=cache.banners[k]||{};$("bannerKey").value=k;$("bannerTitle").value=v.title||v.name||"";$("bannerImage").value=v.image||v.imageUrl||"";$("bannerLink").value=v.link||v.url||"";$("bannerEnabled").value=(v.enabled===false||v.enabled==="false")?"false":"true";$("bannerOrder").value=v.order??0;$("bannerAlt").value=v.alt||"";$("bannerFormTitle").textContent="Edit banner";window.scrollTo({top:0,behavior:"smooth"});}if(d){const k=d.dataset.deleteBanner,v=cache.banners[k];if(confirmDelete(v?.title||k)){try{await del("banners/"+k);cache.banners=await read("banners")||{};renderBanners();message("globalMessage","Banner deleted. Analytics data was kept unchanged.","success");}catch(err){message("globalMessage",friendly(err),"error");}}}});
-function clearBannerForm(){$("bannerForm").reset();$("bannerKey").value="";$("bannerFormTitle").textContent="Add banner";}
-$("cancelBannerEdit").addEventListener("click",clearBannerForm);
-/* Banner analytics */
-function renderBannerStats(){const rows=Object.entries(obj(cache.bannerAnalytics));if(!rows.length){$("bannerStatsTable").innerHTML='<div class="empty">No banner analytics records found.</div>';return;}
-$("bannerStatsTable").innerHTML=`<table><thead><tr><th>Banner ID</th><th>Views / impressions</th><th>Clicks</th><th>Other values</th></tr></thead><tbody>${rows.map(([k,v0])=>{const v=obj(v0);return `<tr><td><b>${safe(k)}</b></td><td>${safe(v.views??v.impressions??v.viewCount??"—")}</td><td>${safe(v.clicks??v.clickCount??"—")}</td><td><small>${safe(Object.entries(v).filter(([x])=>!["views","impressions","viewCount","clicks","clickCount"].includes(x)).map(([x,y])=>x+": "+(typeof y==="object"?"[data]":String(y))).join(" · ").slice(0,250)||"—")}</small></td></tr>`;}).join("")}</tbody></table>`;}
-$("reloadBannerStats").addEventListener("click",()=>loadPage("bannerStats").catch(e=>message("globalMessage",friendly(e),"error")));
-</script>
-</body>
-</html>
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js';
+import {getDatabase,ref,onValue,set,push,remove,update,get} from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js';
+// Same Firebase project as the existing User App and Admin project.
+const firebaseConfig={apiKey:'AIzaSyAGJsBtv72SIH0rQjk42SMFgMb2DpzwlBI',authDomain:'ewhe-1827a.firebaseapp.com',databaseURL:'https://ewhe-1827a-default-rtdb.firebaseio.com/',projectId:'ewhe-1827a',storageBucket:'ewhe-1827a.firebasestorage.app',messagingSenderId:'528686843390',appId:'1:528686843390:web:08daf51901bd1c58ffacaf'};
+const app=initializeApp(firebaseConfig);const db=getDatabase(app);const $=id=>document.getElementById(id);let allData={platforms:{},apps:{},upcoming:{}};let loaded={platforms:false,apps:false,upcoming:false};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function setStatus(msg,error=false){$('status').textContent=msg;$('status').style.color=error?'#ff8b85':'#b7e1ff'}
+function nodeLabel(n){return n==='upcoming'?'Upcoming':n==='apps'?'Published · Legacy apps':'Published'}
+for(const node of ['platforms','apps','upcoming']){onValue(ref(db,node),snap=>{allData[node]=snap.val()||{};loaded[node]=true;displayAllItems();setStatus('Connected · Firebase data loaded from platforms, apps and upcoming.')},err=>{loaded[node]=true;setStatus('Could not read '+node+': '+err.message+' — check Firebase Database Rules.',true);displayAllItems()})}
+function combinedItems(){let out=[];for(const node of ['platforms','apps','upcoming'])Object.entries(allData[node]||{}).forEach(([id,data])=>{if(data&&typeof data==='object')out.push({id,node,...data})});return out.sort((a,b)=>(Number(a.order)||999)-(Number(b.order)||999))}
+function displayAllItems(){const q=$('search').value.trim().toLowerCase();const items=combinedItems().filter(x=>[x.name,x.title,x.description,x.link,x.url].some(v=>String(v||'').toLowerCase().includes(q)));const box=$('admin-apps-list');if(!items.length){box.innerHTML=`<p class="empty">${Object.values(loaded).some(v=>!v)?'Loading…':'No matching apps found.'}</p>`;return}box.innerHTML=items.map(item=>{const upcoming=item.node==='upcoming';const legacy=item.node==='apps';const name=item.name||item.title||'Untitled app';return `<div class="item"><div class="info"><div class="title">[Order: ${esc(item.order||999)}] ${esc(name)} <span class="badge ${upcoming?'up':legacy?'legacy':''}">${nodeLabel(item.node)}</span></div><div class="meta">${esc(item.description||'No description')}<br>Path: ${esc(item.node)} · ID: ${esc(item.id)}</div></div><div class="actions"><button class="sm edit" data-edit-node="${esc(item.node)}" data-edit-id="${esc(item.id)}">Edit</button><button class="sm del" data-del-node="${esc(item.node)}" data-del-id="${esc(item.id)}">Delete</button></div></div>`}).join('');box.querySelectorAll('[data-edit-node]').forEach(b=>b.addEventListener('click',()=>editApp(b.dataset.editNode,b.dataset.editId)));box.querySelectorAll('[data-del-node]').forEach(b=>b.addEventListener('click',()=>deleteApp(b.dataset.delNode,b.dataset.delId)))}
+$('search').addEventListener('input',displayAllItems);$('reload-btn').addEventListener('click',async()=>{setStatus('Reloading Firebase data…');try{for(const n of ['platforms','apps','upcoming']){const s=await get(ref(db,n));allData[n]=s.val()||{};loaded[n]=true}displayAllItems();setStatus('Reload complete.')}catch(e){setStatus('Reload failed: '+e.message,true)}});
+$('app-form').addEventListener('submit',async e=>{e.preventDefault();const id=$('app-id').value,oldNode=$('old-node').value,newNode=$('app-category').value;const name=$('app-name').value.trim();const logo=$('app-logo').value.trim();const link=$('app-link').value.trim();if(!name||!logo){alert('Please enter app name and logo URL.');return}const data={name,title:name,logo,image:logo,thumbnail:logo,link,url:link,description:$('app-desc').value.trim(),status:newNode==='upcoming'?'Upcoming':'Published',order:Number($('app-order').value)||999,updatedAt:Date.now()};try{if(id){if(oldNode===newNode){await update(ref(db,`${newNode}/${id}`),data)}else{await set(ref(db,`${newNode}/${id}`),{...data,createdAt:Date.now()});await remove(ref(db,`${oldNode}/${id}`))}alert('App updated successfully.')}else{data.createdAt=Date.now();await set(push(ref(db,newNode)),data);alert('App added successfully.')}resetForm()}catch(err){setStatus('Save failed: '+err.message,true);alert('Firebase error: '+err.message)}});
+function editApp(node,id){const item=allData[node]?.[id];if(!item)return;const target=node==='apps'?'platforms':node;$('app-id').value=id;$('old-node').value=node;$('app-category').value=target;$('app-name').value=item.name||item.title||'';$('app-logo').value=item.logo||item.image||item.thumbnail||'';$('app-link').value=item.link||item.url||'';$('app-desc').value=item.description||'';$('app-order').value=item.order||1;$('form-heading').textContent='Editing: '+($('app-name').value||'App');$('form-heading').style.color='#32d74b';$('save-btn').textContent='Update App Details';$('save-btn').classList.add('btn-update');$('cancel-btn').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'})}
+async function deleteApp(node,id){if(!confirm('Delete this app permanently from '+node+'?'))return;try{await remove(ref(db,`${node}/${id}`));alert('App deleted.')}catch(e){setStatus('Delete failed: '+e.message,true);alert(e.message)}}
+window.resetForm=()=>{$('app-form').reset();$('app-id').value='';$('old-node').value='';$('app-category').value='platforms';$('app-order').value='1';$('form-heading').textContent='Add New App';$('form-heading').style.color='';$('save-btn').textContent='Save New App';$('save-btn').classList.remove('btn-update');$('cancel-btn').classList.add('hide')};
+$('export-btn').addEventListener('click',()=>{const payload={exportedAt:new Date().toISOString(),database:'ewhe-1827a',platforms:allData.platforms,apps:allData.apps,upcoming:allData.upcoming};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='studymods-hrry-apps-backup.json';a.click();URL.revokeObjectURL(a.href)});
+$('import-btn').addEventListener('click',()=>$('import-file').click());$('import-file').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const parsed=JSON.parse(await file.text());if(!parsed||typeof parsed!=='object')throw new Error('JSON root must be an object.');const incoming=parsed.data&&typeof parsed.data==='object'?parsed.data:parsed;const supported=['platforms','apps','upcoming'];const nodes=supported.filter(n=>incoming[n]&&typeof incoming[n]==='object');if(!nodes.length){if(Array.isArray(incoming)){incoming.forEach(()=>{});throw new Error('Expected JSON with platforms, apps, or upcoming objects.')}throw new Error('No platforms/apps/upcoming data found in this JSON.')}if(!confirm('Import will merge records into the selected Firebase paths and may overwrite records with matching IDs. Continue?'))return;for(const node of nodes){for(const [id,raw] of Object.entries(incoming[node])){if(!raw||typeof raw!=='object')continue;const item={...raw};const name=item.name||item.title||'Untitled app';const logo=item.logo||item.image||item.thumbnail||'';const link=item.link||item.url||'';item.name=name;item.title=item.title||name;item.logo=logo;item.image=item.image||logo;item.link=link;item.url=item.url||link;if(!item.status)item.status=node==='upcoming'?'Upcoming':'Published';await set(ref(db,`${node}/${id}`),item)}}alert('JSON import completed.');for(const n of nodes){const s=await get(ref(db,n));allData[n]=s.val()||{}}displayAllItems();setStatus('JSON import complete.')}catch(err){alert('Import failed: '+err.message);setStatus('Import failed: '+err.message,true)}finally{$('import-file').value=''}});
+</script></body></html>
