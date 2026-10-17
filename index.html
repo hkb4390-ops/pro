@@ -77,6 +77,20 @@ button,input,textarea,select{font:inherit}button{cursor:pointer;border:1px solid
               <div class="row"><button class="primary" type="submit">Save app</button><button type="button" id="cancelAppEdit">Clear form</button></div>
             </form>
           </div>
+          <div class="panel">
+            <h3>Bulk import / export JSON</h3>
+            <p class="tiny muted">Paste an array in <code>[{"id":"...","title":"...","logo":"https://...","link":"https://..."}]</code> format. Existing matching IDs will be updated; new IDs will be added. Other records will not be deleted.</p>
+            <div class="field"><label for="appJson">JSON data</label><textarea id="appJson" style="min-height:190px;font-family:ui-monospace,monospace" spellcheck="false" placeholder='[
+  {
+    "id": "app-id-1",
+    "title": "Study App",
+    "logo": "https://example.com/logo.png",
+    "link": "https://example.com"
+  }
+]'></textarea></div>
+            <div class="row"><button class="primary" id="importAppsJson" type="button">Import / Update JSON</button><button id="exportAppsJson" type="button">Export current list as JSON</button><button id="clearAppsJson" type="button">Clear box</button></div>
+            <div id="appJsonMessage"></div>
+          </div>
           <div class="panel"><div class="toolbar"><input id="appSearch" placeholder="Search apps…"><button id="reloadApps">Reload</button></div><div id="appsTable" class="tablewrap"><div class="empty">Loading…</div></div></div>
         </section>
 
@@ -233,18 +247,62 @@ async function loadPage(name){
   if(name==="bannerStats"){cache.bannerAnalytics=await read("bannerAnalytics")||{};renderBannerStats();}
 }
 /* Apps / platforms */
-function appDataFromForm(){return {name:val("appName"),title:val("appName"),image:val("appImage"),thumbnail:val("appImage"),url:val("appUrl"),link:val("appUrl"),category:val("appCategory"),status:val("appStatus"),description:val("appDescription"),order:Number(val("appOrder")||0),updatedAt:Date.now()};}
+function appDataFromForm(){return {name:val("appName"),title:val("appName"),image:val("appImage"),logo:val("appImage"),thumbnail:val("appImage"),url:val("appUrl"),link:val("appUrl"),category:val("appCategory"),status:val("appStatus"),description:val("appDescription"),order:Number(val("appOrder")||0),updatedAt:Date.now()};}
 function renderApps(){const node=val("appNode")||"platforms", q=val("appSearch").toLowerCase();const rows=sortRows(cache[node]).filter(([k,v])=>[k,v?.name,v?.title,v?.category,v?.status].some(x=>String(x||"").toLowerCase().includes(q)));if(!rows.length){$("appsTable").innerHTML='<div class="empty">No apps found in '+safe(node)+'.</div>';return;}
-$("appsTable").innerHTML=`<table><thead><tr><th>Item</th><th>Name / category</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${v.image||v.thumbnail?`<img class="thumb" src="${safe(v.image||v.thumbnail)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:"—"}</td><td><b>${safe(v.name||v.title||"Untitled")}</b><br><small>${safe(v.category||"No category")} · key: ${safe(k)}</small></td><td><span class="pill ${String(v.status).toLowerCase()==="published"?"green":""}">${safe(v.status||"—")}</span></td><td><div class="row"><button data-edit-app="${safe(k)}">Edit</button><button class="danger" data-delete-app="${safe(k)}">Delete</button></div></td></tr>`).join("")}</tbody></table>`;}
+$("appsTable").innerHTML=`<table><thead><tr><th>Item</th><th>Name / category</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${v.image||v.logo||v.thumbnail?`<img class="thumb" src="${safe(v.image||v.logo||v.thumbnail)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:"—"}</td><td><b>${safe(v.name||v.title||"Untitled")}</b><br><small>${safe(v.category||"No category")} · key: ${safe(k)}</small></td><td><span class="pill ${String(v.status).toLowerCase()==="published"?"green":""}">${safe(v.status||"—")}</span></td><td><div class="row"><button data-edit-app="${safe(k)}">Edit</button><button class="danger" data-delete-app="${safe(k)}">Delete</button></div></td></tr>`).join("")}</tbody></table>`;}
 $("appNode").addEventListener("change",()=>loadPage("apps").catch(e=>message("globalMessage",friendly(e),"error")));
 $("appSearch").addEventListener("input",renderApps);$("reloadApps").addEventListener("click",()=>loadPage("apps").catch(e=>message("globalMessage",friendly(e),"error")));
 $("appForm").addEventListener("submit",async e=>{e.preventDefault();try{const node=val("appNode"),key=val("appKey")||push(ref(db,node)).key;const data=appDataFromForm();if(!data.name)throw new Error("App name is required.");if(!val("appKey"))data.createdAt=Date.now();await write(`${node}/${key}`,data);cache[node]=await read(node)||{};renderApps();clearAppForm();message("globalMessage","App saved successfully.","success");}catch(err){message("globalMessage",friendly(err),"error");}});
-$("appsTable").addEventListener("click",async e=>{const edit=e.target.closest("[data-edit-app]"), delb=e.target.closest("[data-delete-app]"),node=val("appNode");if(edit){const k=edit.dataset.editApp,v=cache[node]?.[k]||{};$("appKey").value=k;$("appName").value=v.name||v.title||"";$("appImage").value=v.image||v.thumbnail||"";$("appUrl").value=v.url||v.link||"";$("appCategory").value=v.category||"";$("appStatus").value=v.status||"Published";$("appOrder").value=v.order??0;$("appDescription").value=v.description||"";$("appFormTitle").textContent="Edit app / platform";window.scrollTo({top:0,behavior:"smooth"});}if(delb){const k=delb.dataset.deleteApp,v=cache[node]?.[k];if(confirmDelete(v?.name||v?.title||k)){try{await del(`${node}/${k}`);cache[node]=await read(node)||{};renderApps();message("globalMessage","App deleted.","success");}catch(err){message("globalMessage",friendly(err),"error");}}}});
+$("appsTable").addEventListener("click",async e=>{const edit=e.target.closest("[data-edit-app]"), delb=e.target.closest("[data-delete-app]"),node=val("appNode");if(edit){const k=edit.dataset.editApp,v=cache[node]?.[k]||{};$("appKey").value=k;$("appName").value=v.name||v.title||"";$("appImage").value=v.image||v.logo||v.thumbnail||"";$("appUrl").value=v.url||v.link||"";$("appCategory").value=v.category||"";$("appStatus").value=v.status||"Published";$("appOrder").value=v.order??0;$("appDescription").value=v.description||"";$("appFormTitle").textContent="Edit app / platform";window.scrollTo({top:0,behavior:"smooth"});}if(delb){const k=delb.dataset.deleteApp,v=cache[node]?.[k];if(confirmDelete(v?.name||v?.title||k)){try{await del(`${node}/${k}`);cache[node]=await read(node)||{};renderApps();message("globalMessage","App deleted.","success");}catch(err){message("globalMessage",friendly(err),"error");}}}});
 function clearAppForm(){$("appForm").reset();$("appKey").value="";$("appFormTitle").textContent="Add app / platform";}
 $("cancelAppEdit").addEventListener("click",clearAppForm);
+function canonicalAppArray(node=val("appNode")){
+  return Object.entries(obj(cache[node])).map(([id,v0])=>{const v=obj(v0);return {id,title:String(v.title||v.name||""),logo:String(v.logo||v.image||v.thumbnail||""),link:String(v.link||v.url||"")};});
+}
+function downloadText(filename,text,mime="application/json;charset=utf-8"){
+  const blob=new Blob([text],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$("importAppsJson").addEventListener("click",async()=>{
+  const button=$("importAppsJson");
+  try{
+    const raw=val("appJson");if(!raw)throw new Error("JSON box is empty. Paste your app array first.");
+    const parsed=JSON.parse(raw);if(!Array.isArray(parsed))throw new Error("JSON must be an array: [ { id, title, logo, link } ].");
+    if(!parsed.length)throw new Error("JSON array is empty.");
+    const normalized=parsed.map((item,i)=>{
+      if(!item||typeof item!=="object"||Array.isArray(item))throw new Error(`Item ${i+1} is not an object.`);
+      const title=String(item.title??item.name??"").trim(),logo=String(item.logo??item.image??item.thumbnail??"").trim(),link=String(item.link??item.url??"").trim();
+      if(!title)throw new Error(`Item ${i+1} has no title/name.`);
+      if(logo&&!/^https?:\/\//i.test(logo))throw new Error(`Item ${i+1} logo must start with http:// or https://.`);
+      if(link&&!/^https?:\/\//i.test(link))throw new Error(`Item ${i+1} link must start with http:// or https://.`);
+      const id=String(item.id??"").trim()||push(ref(db,val("appNode"))).key;
+      if(/[.#$\[\]\/]/.test(id))throw new Error(`Item ${i+1} has an invalid Firebase id: ${id}`);
+      return {id,title,logo,link};
+    });
+    const ids=new Set();for(const item of normalized){if(ids.has(item.id))throw new Error(`Duplicate id in JSON: ${item.id}`);ids.add(item.id);}
+    if(!confirm(`Import ${normalized.length} app(s) into "${val("appNode")}"? Matching IDs will be updated. Other records will remain untouched.`))return;
+    button.disabled=true;button.textContent="Importing…";
+    const node=val("appNode"),now=Date.now();
+    // Preserve extra fields on an existing record while updating the four JSON fields.
+    for(const item of normalized){
+      const old=obj(cache[node]?.[item.id]);
+      const record={...old,id:item.id,title:item.title,name:item.title,logo:item.logo,image:item.logo,thumbnail:item.logo,link:item.link,url:item.link,updatedAt:now};
+      if(!cache[node]?.[item.id])record.createdAt=now;
+      await write(`${node}/${item.id}`,record);
+    }
+    cache[node]=await read(node)||{};renderApps();
+    message("appJsonMessage",`Imported/updated ${normalized.length} app(s) in ${node}. Existing IDs were matched automatically.`,"success");
+    message("globalMessage",`JSON import complete: ${normalized.length} app(s).`,"success");
+  }catch(err){message("appJsonMessage",friendly(err),"error");}
+  finally{button.disabled=false;button.textContent="Import / Update JSON";}
+});
+$("exportAppsJson").addEventListener("click",async()=>{
+  try{const node=val("appNode");cache[node]=await read(node)||{};renderApps();const data=canonicalAppArray(node);const json=JSON.stringify(data,null,2);$("appJson").value=json;downloadText(`studymods-hrry-${node}.json`,json);message("appJsonMessage",`Exported ${data.length} app(s) from ${node} in id/title/logo/link format.`,"success");}
+  catch(err){message("appJsonMessage",friendly(err),"error");}
+});
+$("clearAppsJson").addEventListener("click",()=>{$("appJson").value="";$("appJsonMessage").innerHTML="";});
 /* Upcoming */
 function renderUpcoming(){const q=val("upSearch").toLowerCase(),rows=sortRows(cache.upcoming).filter(([k,v])=>[k,v?.name,v?.title,v?.description].some(x=>String(x||"").toLowerCase().includes(q)));if(!rows.length){$("upcomingTable").innerHTML='<div class="empty">No upcoming apps found.</div>';return;}
-$("upcomingTable").innerHTML=`<table><thead><tr><th>Image</th><th>Name / details</th><th>Actions</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${v.image||v.thumbnail?`<img class="thumb" src="${safe(v.image||v.thumbnail)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:"—"}</td><td><b>${safe(v.name||v.title||"Untitled")}</b><br><small>${safe(v.date||v.releaseDate||"Coming soon")} · key: ${safe(k)}</small></td><td><div class="row"><button data-edit-up="${safe(k)}">Edit</button><button class="danger" data-delete-up="${safe(k)}">Delete</button></div></td></tr>`).join("")}</tbody></table>`;}
+$("upcomingTable").innerHTML=`<table><thead><tr><th>Image</th><th>Name / details</th><th>Actions</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${v.image||v.logo||v.thumbnail?`<img class="thumb" src="${safe(v.image||v.logo||v.thumbnail)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:"—"}</td><td><b>${safe(v.name||v.title||"Untitled")}</b><br><small>${safe(v.date||v.releaseDate||"Coming soon")} · key: ${safe(k)}</small></td><td><div class="row"><button data-edit-up="${safe(k)}">Edit</button><button class="danger" data-delete-up="${safe(k)}">Delete</button></div></td></tr>`).join("")}</tbody></table>`;}
 $("upSearch").addEventListener("input",renderUpcoming);$("reloadUpcoming").addEventListener("click",()=>loadPage("upcoming").catch(e=>message("globalMessage",friendly(e),"error")));
 $("upForm").addEventListener("submit",async e=>{e.preventDefault();try{const k=val("upKey")||push(ref(db,"upcoming")).key;const d={name:val("upName"),title:val("upName"),image:val("upImage"),thumbnail:val("upImage"),date:val("upDate"),releaseDate:val("upDate"),order:Number(val("upOrder")||0),description:val("upDescription"),updatedAt:Date.now()};if(!val("upKey"))d.createdAt=Date.now();await write("upcoming/"+k,d);cache.upcoming=await read("upcoming")||{};renderUpcoming();clearUpForm();message("globalMessage","Upcoming app saved.","success");}catch(err){message("globalMessage",friendly(err),"error");}});
 $("upcomingTable").addEventListener("click",async e=>{const a=e.target.closest("[data-edit-up]"),d=e.target.closest("[data-delete-up]");if(a){const k=a.dataset.editUp,v=cache.upcoming[k]||{};$("upKey").value=k;$("upName").value=v.name||v.title||"";$("upImage").value=v.image||v.thumbnail||"";$("upDate").value=v.date||v.releaseDate||"";$("upOrder").value=v.order??0;$("upDescription").value=v.description||"";$("upFormTitle").textContent="Edit upcoming app";window.scrollTo({top:0,behavior:"smooth"});}if(d){const k=d.dataset.deleteUp;if(confirmDelete(cache.upcoming[k]?.name||k)){try{await del("upcoming/"+k);cache.upcoming=await read("upcoming")||{};renderUpcoming();message("globalMessage","Upcoming item deleted.","success");}catch(err){message("globalMessage",friendly(err),"error");}}}});
